@@ -1,12 +1,12 @@
 # Mobitech Solution
 
-A modern full-stack business site and CRM for Mobitech Solution, built with Next.js, TypeScript, Tailwind CSS, Prisma, and SQLite.
+A modern full-stack business site and CRM for Mobitech Solution, built with Next.js, TypeScript, Tailwind CSS, Prisma, and PostgreSQL for Vercel deployment.
 
 ## Stack
 - Frontend: Next.js + TypeScript + Tailwind CSS
 - Backend: Next.js API routes
 - Authentication: NextAuth with credential-based login
-- Database: Prisma + SQLite
+- Database: Prisma + PostgreSQL (recommended for Vercel)
 - Payments: Stripe checkout integration
 - CRM: lead, client, project, invoice, and dashboard views
 
@@ -16,19 +16,33 @@ A modern full-stack business site and CRM for Mobitech Solution, built with Next
 - Admin authentication and protected dashboard
 - CRM overview with leads, invoices, clients, and growth KPIs
 - Pricing and Stripe checkout flow
-- Deployment-ready config for Vercel and Azure App Service
+- Vercel-ready deployment configuration
 
-## Getting started
+## Vercel setup
+
+1. Create a managed PostgreSQL database (Neon, Supabase, Railway, PlanetScale, etc.).
+2. In Vercel Project Settings > Environment Variables, add:
+   - `NEXTAUTH_URL=https://your-domain.vercel.app`
+   - `NEXTAUTH_SECRET=<generate a strong secret>`
+   - `NEXT_PUBLIC_APP_URL=https://your-domain.vercel.app`
+   - `DATABASE_URL=<postgres connection string>`
+   - `STRIPE_SECRET_KEY=<your Stripe secret key>`
+3. Import the repo to Vercel and deploy.
+
+## Local setup (optional)
+
+If you want to run locally, create a `.env` file using the values in `.env.example` and use a local Postgres database or a dev database provider.
 
 1. Install dependencies:
    npm install
 
-2. Set up environment variables:
+2. Configure environment variables:
    cp .env.example .env
 
 3. Generate Prisma client and initialize the database:
    npx prisma generate
    npx prisma db push
+   npm run db:seed
 
 4. Run the app locally:
    npm run dev
@@ -46,21 +60,7 @@ A modern full-stack business site and CRM for Mobitech Solution, built with Next
 - `src/lib` – auth and Prisma configuration
 - `prisma` – schema and database models
 
-## Deployment
-
-### Vercel
-1. Push the project to GitHub.
-2. Import the repo into Vercel.
-3. Add environment variables from `.env.example`.
-4. Set the build command to `npm run build`.
-5. Deploy.
-
-### Azure App Service
-1. Create a Linux or Node.js App Service.
-2. Set the startup command: `npm run start` or use the Azure startup script with Next.js.
-3. Add the same environment variables.
-4. Run `npm install` and `npm run build` in the deployment pipeline.
-
 ## Notes
+- SQLite is not recommended for Vercel because the filesystem is ephemeral.
+- PostgreSQL is the correct database choice for production deployment on Vercel.
 - Stripe checkout requires a valid `STRIPE_SECRET_KEY`.
-- For production, replace the default secret values and configure secure HTTPS domains.
