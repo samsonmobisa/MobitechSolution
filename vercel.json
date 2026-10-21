@@ -1,14 +1,7 @@
-import { getServerSession } from 'next-auth';
-import { redirect } from 'next/navigation';
-import { authOptions } from '@/lib/auth-options';
-import { DashboardCRM } from '@/components/dashboard-crm';
-
-export default async function DashboardPage() {
-  const session = await getServerSession(authOptions);
-
-  if (!session || !session.user || session.user.role !== 'admin') {
-    redirect('/login');
-  }
-
-  return <DashboardCRM userName={session.user.name || 'Admin'} />;
+{
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "outputDirectory": ".next",
+  "regions": ["iad1"]
 }
